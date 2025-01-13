@@ -52,18 +52,51 @@ const sections = [
 </script>
 
 <style scoped>
-.yugou{
-  border: white; 
-  background-color: rgb(24, 23, 23);
-  width: 200px;
-  height: 50px;
-  border-block-color: rgb(245, 235, 235);
-  color: aliceblue;
+    .yugou {
+      border: none;
+      width: 200px;
+      height: 50px;
+      color: aliceblue;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff7eb3, #ff758c, #ff6b61);
+      background-size: 300%;
+      border-radius: 25px;
+      box-shadow: 0 5px 15px rgba(255, 120, 173, 0.5);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
- 
+    .yugou::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 70%);
+      transform: translateX(-50%) translateY(-50%) rotate(45deg);
+      transition: opacity 0.3s ease, transform 0.5s ease;
+      z-index: 1;
+    }
 
+    .yugou:hover {
+      background-position: 100%;
+      box-shadow: 0 8px 20px rgba(255, 120, 173, 0.8);
+    }
 
-}
+    .yugou:hover::before {
+      opacity: 1;
+      transform: translateX(-30%) translateY(-30%) rotate(90deg);
+    }
+
+    .yugou span {
+      position: relative;
+      z-index: 2;
+    }
 /* 重置默认样式 */
 * {
   margin: 0;

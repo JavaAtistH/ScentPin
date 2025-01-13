@@ -1,231 +1,269 @@
 <template>
-    <div class="booking-container">
-      <!-- Progress Bar -->
-      <div class="progress-bar-container">
-        <div class="progress-bar-wrapper">
-          <div class="progress-bar-content">
-            <!-- Back Button -->
-            <button 
-              @click="prevStep" 
-              class="back-button"
-              :class="{ 'invisible': currentStep === 1 }"
-            >
-              <ChevronLeft class="icon" />
-            </button>
-  
-            <!-- Progress Steps -->
-            <div class="progress-steps">
-              <div class="steps-wrapper">
-                <div v-for="(step, index) in steps" :key="index" class="step-item">
-                  <div 
-                    class="step-circle"
-                    :class="[
-                      currentStep > index + 1 ? 'step-completed' : 
-                      currentStep === index + 1 ? 'step-current' : 'step-upcoming'
-                    ]"
-                  >
-                    <component :is="step.icon" class="icon" />
-                  </div>
-                  <div 
-                    v-if="index < steps.length - 1" 
-                    class="step-line"
-                    :class="[
-                      currentStep > index + 1 ? 'line-completed' : 'line-upcoming'
-                    ]"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Form Content -->
-      <div class="form-container">
-        <div class="form-content">
-          <!-- Age Selection -->
-          <div v-if="currentStep === 1" class="step-container">
-            <div class="step-header">
-              <h1 class="step-title">HOW OLD ARE YOU?</h1>
-            </div>
-            
-            <div class="age-slider">
-              <div class="slider-track">
-                <div 
-                  class="slider-progress"
-                  :style="{ width: `${(age / 100) * 100}%` }"
-                ></div>
-                <div 
-                  class="slider-handle"
-                  :style="{ left: `${(age / 100) * 100}%` }"
-                  @mousedown="startDragging"
-                >
-                  <div class="slider-value">{{ age }}</div>
-                </div>
-              </div>
-              
-              <div class="slider-labels">
-                <span>1</span>
-                <span>100</span>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Gender Selection -->
-          <div v-if="currentStep === 2" class="step-container">
-            <div class="step-header">
-              <h1 class="step-title">WHAT IS YOUR GENDER?</h1>
-              <p class="step-subtitle">Select only 1.</p>
-            </div>
-  
-            <div class="gender-options">
-              <button
-                v-for="option in genderOptions"
-                :key="option.value"
-                @click="gender = option.value"
-                class="gender-button"
-                :class="{ 'selected': gender === option.value }"
-              >
-                <div class="gender-content">
-                  <component 
-                    :is="option.icon" 
-                    class="gender-icon"
-                    :class="{ 'selected': gender === option.value }"
-                  />
-                  <span 
-                    class="gender-label"
-                    :class="{ 'selected': gender === option.value }"
-                  >
-                    {{ option.label }}
-                  </span>
-                </div>
-              </button>
-            </div>
-          </div>
-  
-          <!-- Perfume Strength -->
-          <div v-if="currentStep === 3" class="step-container">
-            <div class="step-header">
-              <h1 class="step-title">您喜欢多浓的香水？</h1>
-              <p class="step-subtitle">仅选择 1.</p>
-            </div>
-  
-            <div class="strength-options">
-              <button
-                v-for="(option, index) in strengthOptions"
-                :key="index"
-                @click="strength = option.value"
-                class="strength-button"
+  <div class="booking-container no-select">
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-content">
+          <!-- Back Button -->
+          <button 
+            @click="prevStep" 
+            class="back-button"
+            :class="{ 'invisible': currentStep === 1 }"
+          >
+            <ChevronLeft class="icon" />
+          </button>
+
+          <!-- Progress Steps -->
+          <div class="progress-steps">
+            <div class="steps-wrapper">
+              <div 
+                v-for="(step, index) in steps" 
+                :key="index" 
+                class="step-item"
               >
                 <div 
-                  class="strength-bar"
-                  :class="{ 'selected': strength === option.value }"
-                  :style="{ height: `${option.height}%` }"
-                ></div>
-                <div 
-                  class="strength-label"
-                  :class="{ 'selected': strength === option.value }"
+                  class="step-circle"
+                  :class="[
+                    currentStep > index + 1 
+                      ? 'step-completed' 
+                      : currentStep === index + 1 
+                        ? 'step-current' 
+                        : 'step-upcoming'
+                  ]"
                 >
-                  {{ option.label }}
+                  <component :is="step.icon" class="icon" />
                 </div>
-              </button>
+                <div 
+                  v-if="index < steps.length - 1" 
+                  class="step-line"
+                  :class="[
+                    currentStep > index + 1 
+                      ? 'line-completed' 
+                      : 'line-upcoming'
+                  ]"
+                ></div>
+              </div>
             </div>
-          </div>
-  
-          <!-- Navigation -->
-          <div class="navigation">
-            <button
-              @click="nextStep"
-              class="next-button"
-            >
-              {{ currentStep === steps.length ? '完成' : '下一步' }}
-            </button>
           </div>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  import { 
-    ChevronLeft,
-    User,
-    Heart,
-    Sparkles,
-    Male,
-    Female,
-    Users
-  } from 'lucide-vue-next'
-  
-  const currentStep = ref(1)
-  const age = ref(42)
-  const gender = ref(null)
-  const strength = ref(null)
-  
-  const steps = [
-    { icon: User, label: 'About' },
-    { icon: Heart, label: 'Personality' },
-    { icon: Sparkles, label: 'Scents' }
-  ]
-  
-  const genderOptions = [
-    { value: 'male', label: 'MALE', icon: Male },
-    { value: 'female', label: 'FEMALE', icon: Female },
-    { value: 'neutral', label: 'GENDER NEUTRAL', icon: Users }
-  ]
-  
-  const strengthOptions = [
-    { value: 'light', label: '微妙的', height: 60 },
-    { value: 'medium', label: '均衡', height: 80 },
-    { value: 'strong', label: '强的', height: 100 }
-  ]
-  
-  const startDragging = (e) => {
-    const container = e.target.parentElement
-    const containerRect = container.getBoundingClientRect()
-    
-    const updateAge = (pageX) => {
-      const relativeX = pageX - containerRect.left
-      const percentage = Math.max(0, Math.min(1, relativeX / containerRect.width))
-      age.value = Math.round(percentage * 100)
-    }
-    
-    const onMouseMove = (e) => {
-      updateAge(e.pageX)
-    }
-    
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('mouseup', onMouseUp)
-    }
-    
-    document.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('mouseup', onMouseUp)
+
+    <!-- Form Content -->
+    <div class="form-container">
+      <div class="form-content">
+        <!-- Age Selection -->
+        <div v-if="currentStep === 1" class="step-container">
+          <div class="step-header">
+            <h1 class="step-title">HOW OLD ARE YOU?</h1>
+          </div>
+          
+          <div class="age-slider">
+            <div 
+              class="slider-track"
+              ref="sliderContainerRef"
+            >
+              <div 
+                class="slider-progress"
+                :style="{ width: `${(age / 100) * 100}%` }"
+              ></div>
+              <div 
+                class="slider-handle"
+                :style="{ left: `${(age / 100) * 100}%` }"
+                @mousedown="startDragging"
+                @touchstart="startDragging"
+              >
+                <div class="slider-value">{{ age }}</div>
+              </div>
+            </div>
+            
+            <div class="slider-labels">
+              <span>1</span>
+              <span>100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gender Selection -->
+        <div v-if="currentStep === 2" class="step-container">
+          <div class="step-header">
+            <h1 class="step-title">WHAT IS YOUR GENDER?</h1>
+            <p class="step-subtitle">Select only 1.</p>
+          </div>
+
+          <div class="gender-options">
+            <button
+              v-for="option in genderOptions"
+              :key="option.value"
+              @click="gender = option.value"
+              class="gender-button"
+              :class="{ 'selected': gender === option.value }"
+            >
+              <div class="gender-content">
+                <component 
+                  :is="option.icon" 
+                  class="gender-icon"
+                  :class="{ 'selected': gender === option.value }"
+                />
+                <span 
+                  class="gender-label"
+                  :class="{ 'selected': gender === option.value }"
+                >
+                  {{ option.label }}
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Perfume Strength -->
+        <div v-if="currentStep === 3" class="step-container">
+          <div class="step-header">
+            <h1 class="step-title">您喜欢多浓的香水？</h1>
+            <p class="step-subtitle">仅选择 1.</p>
+          </div>
+
+          <div class="strength-options">
+            <button
+              v-for="(option, index) in strengthOptions"
+              :key="index"
+              @click="strength = option.value"
+              class="strength-button"
+            >
+              <div 
+                class="strength-bar"
+                :class="{ 'selected': strength === option.value }"
+                :style="{ height: `${option.height}%` }"
+              ></div>
+              <div 
+                class="strength-label"
+                :class="{ 'selected': strength === option.value }"
+              >
+                {{ option.label }}
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+          <button
+            @click="nextStep"
+            class="next-button"
+          >
+            {{ currentStep === steps.length ? '完成' : '下一步' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { ChevronLeft, User, Heart, Sparkles, Users } from 'lucide-vue-next'
+import FemaleIcon from '../assets/Reserve/female.svg?component'
+import MaleIcon from '../assets/Reserve/male.svg?component'
+
+/** ============= 数据和状态 ============= **/
+const currentStep = ref(1)
+const age = ref(42)
+const gender = ref(null)
+const strength = ref(null)
+
+// steps 数组用于控制进度指示器
+const steps = [
+  { icon: User, label: 'About' },
+  { icon: Heart, label: 'Personality' },
+  { icon: Sparkles, label: 'Scents' }
+]
+
+// 性别选项
+const genderOptions = [
+  { value: 'male', label: 'MALE', icon: MaleIcon },
+  { value: 'female', label: 'FEMALE', icon: FemaleIcon },
+  { value: 'neutral', label: 'GENDER NEUTRAL', icon: Users }
+]
+
+// 浓度选项
+const strengthOptions = [
+  { value: 'light', label: '微妙的', height: 60 },
+  { value: 'medium', label: '均衡', height: 80 },
+  { value: 'strong', label: '强的', height: 100 }
+]
+
+// 引用 slider-track 容器
+const sliderContainerRef = ref(null)
+
+/** ============= 拖拽滑块事件处理 ============= **/
+const startDragging = (event) => {
+  const getPageX = (e) => e.touches?.[0]?.pageX || e.pageX
+  const container = sliderContainerRef.value
+  if (!container) return
+
+  const containerRect = container.getBoundingClientRect()
+
+  const updateAge = (pageX) => {
+    const relativeX = pageX - containerRect.left
+    const percentage = Math.max(0, Math.min(1, relativeX / containerRect.width))
+    age.value = Math.round(percentage * 100)
   }
-  
-  const nextStep = () => {
-    if (currentStep.value < steps.length) {
-      currentStep.value++
-    }
+
+  updateAge(getPageX(event))
+
+  const onPointerMove = (e) => {
+    e.preventDefault()
+    updateAge(getPageX(e))
   }
-  
-  const prevStep = () => {
-    if (currentStep.value > 1) {
-      currentStep.value--
-    }
+
+  const onPointerUp = () => {
+    document.removeEventListener('mousemove', onPointerMove)
+    document.removeEventListener('mouseup', onPointerUp)
+    document.removeEventListener('touchmove', onPointerMove)
+    document.removeEventListener('touchend', onPointerUp)
   }
-  </script>
+
+  document.addEventListener('mousemove', onPointerMove)
+  document.addEventListener('mouseup', onPointerUp)
+  document.addEventListener('touchmove', onPointerMove)
+  document.addEventListener('touchend', onPointerUp)
+}
+
+/** ============= 步骤跳转逻辑 ============= **/
+const nextStep = () => {
+  if (currentStep.value < steps.length) {
+    currentStep.value++
+  } else {
+    console.log('所有步骤完成，执行提交或跳转')
+  }
+}
+
+const prevStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--
+  }
+}
+</script>
+
   
   <style scoped>
   .booking-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    position: fixed;
+    top: 0;
+    left: 0;
     min-height: 100vh;
     background-color: #FAF7F2;
   }
   
+  /* Progress Bar Styles */
   .progress-bar-container {
     position: fixed;
-    top: 0;
+    width: 98%;
+    top: 80px; /* 移到header下方 */
     left: 0;
     right: 0;
     background-color: rgba(255, 255, 255, 0.8);
@@ -321,8 +359,9 @@
     background-color: #E5E5E5;
   }
   
+  /* Form Content Styles */
   .form-container {
-    padding: 8rem 1rem 5rem;
+    padding: 12rem 1rem 5rem; /* 增加顶部内边距，为header和progress bar留出空间 */
   }
   
   .form-content {
@@ -340,6 +379,7 @@
   }
   
   .step-title {
+    color: #2C2C2C;
     font-size: 2.25rem;
     font-weight: 300;
     letter-spacing: -0.025em;
@@ -525,11 +565,6 @@
   /* Utility Classes */
   .invisible {
     visibility: hidden;
-  }
-  
-  /* Prevent text selection during dragging */
-  .no-select {
-    user-select: none;
   }
   
   /* Responsive Design */

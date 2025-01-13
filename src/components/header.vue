@@ -38,7 +38,7 @@
           @click.stop
         >
           <div class="menu-header">
-            
+            <span class="menu-title">菜单</span>
           </div>
           <ul class="menu-list">
             <li v-for="(item, index) in menuItems" 
@@ -71,11 +71,11 @@ import { MenuIcon, XIcon } from 'lucide-vue-next'
 const showDropdown = ref(false)
 
 const menuItems = [
-  { name: '首页', path: '/products' },
-  { name: '产品介绍', path: '/products' },
+  { name: '首页', path: '/' },
+  { name: '产品介绍', path: '/introduce' },
   { name: '我们团队', path: '/team' },
-  { name: '产品展示', path: '/showcase' },
-  { name: '预约产品', path: '/booking' }
+  { name: '产品展示', path: '/show' },
+  { name: '预约产品', path: '/reserve' }
 ]
 
 const toggleDropdown = () => {
@@ -90,13 +90,18 @@ const toggleDropdown = () => {
   left: 0;
   right: 0;
   height: 80px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  background: transparent;
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   padding: 0 2rem;
   z-index: 40;
+  transition: all 0.3s ease;
+}
+
+.header:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 /* 菜单按钮样式 */
