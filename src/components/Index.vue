@@ -2,12 +2,15 @@
   <div class="index-page">
     <Header/>
     <MainContent/>
+   <Reserve/>
   </div>
 </template>
 
 <script setup>
 import Header from './Header.vue'
 import MainContent from './MainContent.vue'
+import Reserve from './Reserve.vue';
+
 
 </script>
 
