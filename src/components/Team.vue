@@ -24,6 +24,9 @@
 // 导入图片
 import ceoImage from '../assets/member/ceo.jpg'
 import ctoImage from '../assets/member/cto.jpg'
+import memberImage from '../assets/member/member1.png'
+import member1Image from '../assets/member/member1.png'
+import member2Image from '../assets/member/member1.png'
 
 const teamMembers = [
     {
@@ -38,28 +41,31 @@ const teamMembers = [
         name: '彭浩宇',
         role: 'CTO',
         description: '重庆大学研究生，机械工程专业，负责硬件研发',
-        image: 'cto'
+        image: 'member1'
     },
     {
         id: 3,
         name: '高敏峰',
         role: '香水配方师',
         description: '精通现代调香技术，专注于可持续环保香料的应用。',
-        image: 'cto'
+        image: 'member2'
     },
     {
         id: 4,
         name: '黄科钦',
         role: 'CEO二把手',
         description: '网站开发',
-        image: 'cto'
+        image: 'member'
     }
 ]
 
 // 图片映射对象
 const imageMap = {
     ceo: ceoImage,
-    cto: ctoImage
+    cto: ctoImage,
+    member: memberImage,
+    member1: member1Image,
+    member2: member2Image,
 }
 
 // 获取图片URL的方法
@@ -108,6 +114,7 @@ const getImageUrl = (imageName) => {
     gap: 2rem;
     max-width: 1400px;
     margin: 0 auto;
+    margin-bottom: 100px;
 }
 
 .team-member {
