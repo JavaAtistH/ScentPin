@@ -9,8 +9,8 @@
       </div>
       <div class="details">
         <h2 class="title">ScentPin</h2>
-        <p class="price">价格：1000000000000000000000000000</p>
-        <router-link to="/Reserve" class="cta-button">立即购买</router-link>
+        <p class="price">Price：1000000000000000000000000000</p>
+        <router-link to="/Reserve" class="cta-button">Purchase</router-link>
       </div>
     </div>
   </div>

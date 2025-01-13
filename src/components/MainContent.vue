@@ -7,7 +7,8 @@
         <p class="description">{{ sections[0].description }}</p>
         <br />
         <br />
-        <router-link to="/Reserve" class="yugou">立即预约</router-link>
+        <!-- 立即预约 按钮 -->
+        <router-link to="/Reserve" class="yugou">Reserve</router-link>
       </div>
     </section>
 
@@ -41,12 +42,12 @@ const sections = [
   {
     image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000',
     title: 'Fasion',
-    description: '感受生活'
+    description: 'Feel life'
   },
   {
     image: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3',
-    title: '让生活成为艺术',
-    description: '活出艺术人生'
+    title: 'Make the life be Art',
+    description: 'live Artly'
   }
 ]
 </script>

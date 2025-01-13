@@ -1,8 +1,8 @@
 <template>
     <div class="team-container">
         <div class="team-header">
-            <h1 class="team-title">我们的团队</h1>
-            <p class="team-subtitle">专业调香师与香水顾问，为您提供专业的香水定制服务</p>
+            <h1 class="team-title">Our Team</h1>
+            <p class="team-subtitle">Create a perfume for you to use as you wish</p>
         </div>
 
         <div class="team-grid">
@@ -11,7 +11,7 @@
                     <img :src="getImageUrl(member.image)" :alt="member.name" class="member-image" />
                 </div>
                 <div class="member-info">
-                    <h3 class="member-name">{{ member.name }}</h3>
+                    <h2 class="member-name">{{ member.name }}</h2>
                     <p class="member-role">{{ member.role }}</p>
                     <p class="member-description">{{ member.description }}</p>
                 </div>

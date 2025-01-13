@@ -82,7 +82,7 @@
         <!-- 香水浓度 -->
         <div v-if="currentStep === 3" class="step-container">
           <div class="step-header">
-            <h1 class="step-title">您喜欢多浓的香水？</h1>
+            <h1 class="step-title">How strong of a perfume do you like?</h1>
           </div>
           <div class="strength-options">
             <button v-for="(option, index) in strengthOptions" :key="index" @click="strength = option.value"
@@ -101,7 +101,7 @@
         <!-- 导航 -->
         <div class="navigation">
           <button @click="nextStep" class="next-button">
-            {{ currentStep === steps.length ? '完成' : '下一步' }}
+            {{ currentStep === steps.length ? 'OVER' : 'NEXT' }}
           </button>
         </div>
       </div>
@@ -137,9 +137,9 @@ const genderOptions = [
 
 // 浓度选项
 const strengthOptions = [
-  { value: 'light', label: '微妙的', height: 60 },
-  { value: 'medium', label: '均衡', height: 80 },
-  { value: 'strong', label: '强的', height: 100 }
+  { value: 'light', label: 'Subtle', height: 60 },
+  { value: 'medium', label: 'Balanced', height: 80 },
+  { value: 'strong', label: 'Strong', height: 100 }
 ]
 
 // 引用 slider-track 容器
