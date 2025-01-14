@@ -9,7 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.28.1",
+    "aceternity-ui": "^0.2.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.17.0",
     "lucide-vue-next": "^0.471.0",
+    "tailwind-merge": "^2.6.0",
     "three": "^0.172.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"

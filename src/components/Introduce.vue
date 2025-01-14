@@ -136,10 +136,14 @@ const imageStyle = computed(() => {
 <style scoped>
 .product-container {
   position: fixed;
-  top: 80px; /* 为header留出空间 */
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  position: fixed;
+  top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  min-height: 100vh;
   background: #000;
   color: #fff;
   display: grid;
