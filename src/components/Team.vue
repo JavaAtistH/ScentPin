@@ -83,7 +83,7 @@ const getImageUrl = (imageName) => {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #415d45;
+    background-color: #aeb382;
     padding: 4rem 2rem;
     bottom: 10px;
 }
