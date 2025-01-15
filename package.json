@@ -12,6 +12,7 @@
     "@tabler/icons-react": "^3.28.1",
     "aceternity-ui": "^0.2.2",
     "clsx": "^2.1.1",
+    "element-plus": "^2.9.3",
     "framer-motion": "^11.17.0",
     "lucide-vue-next": "^0.471.0",
     "tailwind-merge": "^2.6.0",

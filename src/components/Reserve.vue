@@ -5,24 +5,28 @@
       <div class="progress-bar-wrapper">
         <div class="progress-bar-content">
           <!-- 返回按钮 -->
-          <button @click="prevStep" class="back-button" :class="{ 'invisible': currentStep === 1 }">
+          <button
+            @click="prevStep"
+            class="back-button"
+            :class="{ 'invisible': currentStep === 1 }"
+          >
             <ChevronLeft class="icon" />
           </button>
 
           <!-- 进度步骤 -->
           <div class="progress-steps">
             <div class="steps-wrapper">
-              <div 
-                v-for="(step, index) in steps" 
-                :key="index" 
+              <div
+                v-for="(step, index) in steps"
+                :key="index"
                 class="step-item"
               >
                 <div
                   class="step-circle"
-                  :class="[      
-                    currentStep > index  //currentStep > index +1
+                  :class="[
+                    currentStep > (index + 1)
                       ? 'step-completed'
-                      : currentStep === index + 1
+                      : currentStep === (index + 1)
                         ? 'step-current'
                         : 'step-upcoming'
                   ]"
@@ -30,11 +34,11 @@
                   <component :is="step.icon" class="icon" />
                 </div>
 
-                <div 
+                <div
                   v-if="index < steps.length - 1"
                   class="step-line"
                   :class="[
-                    currentStep > index + 1
+                    currentStep > (index + 1)
                       ? 'line-completed'
                       : 'line-upcoming'
                   ]"
@@ -58,8 +62,11 @@
 
           <div class="age-slider">
             <div class="slider-track" ref="sliderContainerRef">
-              <div class="slider-progress" :style="{ width: `${(age / 100) * 100}%` }"></div>
-              <div 
+              <div
+                class="slider-progress"
+                :style="{ width: `${(age / 100) * 100}%` }"
+              ></div>
+              <div
                 class="slider-handle"
                 :style="{ left: `${(age / 100) * 100}%` }"
                 @mousedown="startDragging"
@@ -92,7 +99,11 @@
               :class="{ 'selected': gender === option.value }"
             >
               <div class="gender-content">
-                <component :is="option.icon" class="gender-icon" :class="{ 'selected': gender === option.value }" />
+                <component
+                  :is="option.icon"
+                  class="gender-icon"
+                  :class="{ 'selected': gender === option.value }"
+                />
                 <span
                   class="gender-label"
                   :class="{ 'selected': gender === option.value }"
@@ -104,7 +115,7 @@
           </div>
         </div>
 
-        <!-- 第 3 步：香水浓度 -->
+        <!-- 第 3 步：喜欢的浓度 -->
         <div v-if="currentStep === 3" class="step-container">
           <div class="step-header">
             <h1 class="step-title">How strong of a perfume do you like?</h1>
@@ -202,7 +213,7 @@
         <!-- 导航 -->
         <div class="navigation">
           <button @click="nextStep" class="next-button">
-            {{ currentStep === steps.length ? 'OVER' : 'NEXT' }}
+            {{ currentStep === steps.length ? 'COMMIT' : 'NEXT' }}
           </button>
         </div>
       </div>
@@ -212,54 +223,52 @@
 
 <script setup>
 import { ref } from 'vue'
-import { ChevronLeft, User, Heart, Sparkles, Flower2, Mail ,Users} from 'lucide-vue-next'
+import axios from 'axios'
+
+// 图标示例
+import { ChevronLeft, User, Heart, Sparkles, Flower2, Mail, Users } from 'lucide-vue-next'
 import FemaleIcon from '../assets/Reserve/female.svg?component'
 import MaleIcon from '../assets/Reserve/male.svg?component'
-
-
+import { ElMessage } from 'element-plus' 
 
 /** ============= 数据和状态 ============= **/
 const currentStep = ref(1)
 const age = ref(42)
 const gender = ref(null)
 const strength = ref(null)
-
-// 新增：喜欢的香水类型
-const favoriteType = ref(null)
-
-// 新增：联系方式
+const favoriteType = ref(null)  // 喜欢的香水类型
 const contactName = ref('')
 const contactPhone = ref('')
 const contactEmail = ref('')
 
-// steps 数组用于控制进度指示器 （增至 5 步）
+// 进度步骤
 const steps = [
-  { icon: User, label: 'About' },
-  { icon: Heart, label: 'Personality' },
-  { icon: Sparkles, label: 'Scents' },
+  { icon: User,    label: 'About' },
+  { icon: Heart,   label: 'Personality' },
+  { icon: Sparkles,label: 'Scents' },
   { icon: Flower2, label: 'Type' },   // 第四步
-  { icon: Mail, label: 'Contact' }    // 第五步
+  { icon: Mail,    label: 'Contact' } // 第五步
 ]
 
 // 性别选项
 const genderOptions = [
-  { value: 'male', label: 'MALE', icon: MaleIcon },
-  { value: 'female', label: 'FEMALE', icon: FemaleIcon },
+  { value: 'male',    label: 'MALE',           icon: MaleIcon },
+  { value: 'female',  label: 'FEMALE',         icon: FemaleIcon },
   { value: 'neutral', label: 'GENDER NEUTRAL', icon: Users }
 ]
 
 // 浓度选项
 const strengthOptions = [
-  { value: 'light', label: 'Subtle', height: 60 },
+  { value: 'light',  label: 'Subtle',   height: 60 },
   { value: 'medium', label: 'Balanced', height: 80 },
-  { value: 'strong', label: 'Strong', height: 100 }
+  { value: 'strong', label: 'Strong',   height: 100 }
 ]
 
-// 喜欢的香水类型选项，示例
+// 香水类型选项
 const typeOptions = [
-  { value: 'floral', label: 'Floral', icon: Flower2 },
-  { value: 'woody', label: 'Woody', icon: null },  // 如果没有对应的icon，可以替换或直接展示文字
-  { value: 'fresh', label: 'Fresh', icon: null },
+  { value: 'floral',   label: 'Floral',   icon: Flower2 },
+  { value: 'woody',    label: 'Woody',    icon: null },  // 自行替换对应 icon
+  { value: 'fresh',    label: 'Fresh',    icon: null },
   { value: 'oriental', label: 'Oriental', icon: null }
 ]
 
@@ -280,13 +289,16 @@ const startDragging = (event) => {
     age.value = Math.round(percentage * 100)
   }
 
+  // 第一次点击位置
   updateAge(getPageX(event))
 
+  // 拖拽中
   const onPointerMove = (e) => {
     e.preventDefault()
     updateAge(getPageX(e))
   }
 
+  // 结束拖拽
   const onPointerUp = () => {
     document.removeEventListener('mousemove', onPointerMove)
     document.removeEventListener('mouseup', onPointerUp)
@@ -305,16 +317,8 @@ const nextStep = () => {
   if (currentStep.value < steps.length) {
     currentStep.value++
   } else {
-    // 所有步骤完成，执行提交或跳转等操作
-    console.log('所有步骤完成，提交表单：', {
-      age: age.value,
-      gender: gender.value,
-      strength: strength.value,
-      favoriteType: favoriteType.value,
-      contactName: contactName.value,
-      contactPhone: contactPhone.value,
-      contactEmail: contactEmail.value
-    })
+    // 所有步骤完成时提交
+    submitReserve()
   }
 }
 
@@ -323,6 +327,53 @@ const prevStep = () => {
     currentStep.value--
   }
 }
+
+/** ============= 提交逻辑 ============= **/
+const submitReserve = async () => {
+  try {
+    const response = await axios.post(
+      'http://localhost:8080/addReserve',
+      {
+        age: age.value,
+        gender: gender.value,
+        strength: strength.value,
+        favoriteType: favoriteType.value,
+        contactName: contactName.value,
+        contactPhone: contactPhone.value,
+        contactEmail: contactEmail.value,
+      },
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result = response.data;
+    console.log(result);
+
+    if (result.code === 200) {
+      ElMessage({
+        message: result.data,
+        type: 'success',
+        duration: 3000, // 提示持续时间 (ms)
+      });
+    } else {
+      ElMessage({
+        message: result.msg,
+        type: 'error',
+        duration: 3000,
+      });
+    }
+  } catch (error) {
+    console.error('请求失败:', error);
+    ElMessage({
+      message: '提交失败，请检查信息是否完善',
+      type: 'error',
+      duration: 3000,
+    });
+  }
+};
 </script>
 
 <style scoped>
@@ -515,6 +566,7 @@ const prevStep = () => {
   transform: translateX(-50%);
   font-size: 1.5rem;
   font-weight: 300;
+  color: #1b1b19;
 }
 
 .slider-labels {
